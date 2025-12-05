@@ -6,314 +6,1143 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>whysolitude</title>
     <link rel="icon" type="image/png"
-        href="https://cdn.discordapp.com/attachments/1200392128312918087/1444663987999604777/e2cc3f915e2967ea83fa57a69dcdf911.png?ex=692d87af&is=692c362f&hm=a3b79182b86c44ffa8ee0b3ad3456dd167226f47d8366ed7a885cf40c558a983&">
+        href="https://cdn.discordapp.com/attachments/1402511414714830888/1446448413292888114/image.png?ex=6934058f&is=6932b40f&hm=7736083163a8aa0e9d2aaa62cf64042b1db20563d6cf78bc908320ed9c7cb13e&">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-purple': '#a855f7',
+                        'neon-pink': '#ec4899',
+                        'deep-space': '#0f051c',
+                        'cosmic-blue': '#3b82f6',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+                        'slide-up': 'slide-up 0.5s ease-out',
+                        'gradient-shift': 'gradient-shift 8s ease infinite',
+                        'glitch': 'glitch 2s infinite',
+                    },
+                    keyframes: {
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: 1 },
+                            '50%': { opacity: 0.7 },
+                        },
+                        'slide-up': {
+                            '0%': { transform: 'translateY(20px)', opacity: 0 },
+                            '100%': { transform: 'translateY(0)', opacity: 1 },
+                        },
+                        'gradient-shift': {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                        },
+                        'glitch': {
+                            '0%': { transform: 'translate(0)' },
+                            '20%': { transform: 'translate(-2px, 2px)' },
+                            '40%': { transform: 'translate(-2px, -2px)' },
+                            '60%': { transform: 'translate(2px, 2px)' },
+                            '80%': { transform: 'translate(2px, -2px)' },
+                            '100%': { transform: 'translate(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background: radial-gradient(at 50% 0%, #4c1d95, #0f051c 70%, #0c0a09 100%);
-            background-attachment: fixed;
-            font-family: ui-sans-serif, system-ui, sans-serif;
-            color: white;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             min-height: 100vh;
-            padding: 20px;
             overflow-x: hidden;
-            position: relative;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .main-container-wrapper {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-            padding-top: 50px;
-            padding-bottom: 50px;
+        /* Светлая тема */
+        body.light {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+            color: #1e293b;
         }
 
-        body::before {
-            content: '';
+        /* Тёмная тема */
+        body.dark {
+            background: linear-gradient(135deg, #0f051c 0%, #1a1030 30%, #2d1b69 70%, #3b0764 100%);
+            color: #f1f5f9;
+            background-size: 400% 400%;
+            animation: gradient-shift 15s ease infinite;
+        }
+
+        /* Стили для стеклянного морфизма */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark .glass-card {
+            background: rgba(30, 30, 46, 0.2);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+        }
+
+        body.light .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+
+        /* Анимированный градиент для заголовков */
+        .gradient-text {
+            background: linear-gradient(45deg, #a855f7, #ec4899, #3b82f6);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 3s linear infinite;
+        }
+
+        /* Эффект параллакса для фона */
+        .parallax-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMuorgvMjAwMC9zdmciPgogIDxwYXRoIGZpbGw9IiMwMDEwMTgiIGQ9Ik0wIDBoMjAwVjIwMEgwVjB6TTEwIDcwYzAgMTEtOSA2LTkgMTZzOSA1IDkgMTVjMCAxMC05IDYtOSAxNnMyMiA2IDIyIDE1YzAgOS05IDUtOSAxNXMyMiA3IDIyIDE1YzAgOC05IDQtOSAxNXMyMiA4IDIyIDE1YzAgNystOSAzLTkgMTZzMjIgNyAyMiAxNWMwIDgtOSA0LTkgMTVzMjIgOCAyMiAxNmMwIDctOSA0LTkgMTZzMTIgNyAxMiAxNWMwIDgtOSA0LTkgMTVzMjIgOCAyMiAxN20xMDAtMTBWMjAwSDUwVjUwem0xMDAtMTBWMjAwSDUwVjUwem02MCA2MHYyMEgyMEwwVjUwem02MC02MHYyMEgyMEwwVjUwem0xMDAtMjBWMjAwSDBWNDB6TTE1MCAxNjB2MjBILTBWMzB6Ii8+Cjwvc3ZnPg==');
-            opacity: 0.05;
-            pointer-events: none;
-            z-index: 0;
+            z-index: -1;
+            opacity: 0.3;
         }
 
-        .content-section {
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(168, 85, 247, 0.3);
+            animation: float infinite linear;
+        }
+
+        /* Стили для вкладок */
+        .tab-indicator {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #a855f7, #ec4899);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 3px;
+        }
+
+        /* Анимация появления контента */
+        .content-item {
             display: none;
             opacity: 0;
-            transition: opacity 0.3s ease-in-out;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
-        .content-section.active {
+        .content-item.active {
             display: block;
             opacity: 1;
+            transform: translateY(0);
+            animation: slide-up 0.5s ease-out;
         }
 
-        .tag-pill {
-            transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
-        }
-
-        .tag-pill:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .tab-button {
+        /* Стиль для кнопок */
+        .btn-neon {
             position: relative;
-            z-index: 10;
+            overflow: hidden;
+            transition: all 0.3s;
         }
 
-        .tab-button.active {
-            color: white;
-            background-color: rgba(168, 85, 247, 0.2);
-        }
-
-        .social-button {
-            position: relative;
-            width: 80px;
-            height: 80px;
-            border-radius: 9999px;
-            background-color: rgba(255, 255, 255, 0.05);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            overflow: visible;
-            transition: all 0.2s ease-in-out;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            text-decoration: none;
-            color: white;
-            gap: 4px;
-        }
-
-        .social-button:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-        }
-
-        .social-button img {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-            border-radius: 9999px;
-            padding: 0;
-            background-color: transparent;
-        }
-
-        .social-button::before {
+        .btn-neon::before {
             content: '';
             position: absolute;
-            inset: -5px;
-            background: linear-gradient(45deg, #a855f7, #c084fc);
-            opacity: 0;
-            filter: blur(10px);
-            transition: opacity 0.3s ease-in-out;
-            border-radius: 9999px;
-            z-index: -1;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
         }
 
-        .social-button:hover::before {
-            opacity: 0.6;
+        .btn-neon:hover::before {
+            left: 100%;
         }
 
-        .social-button:active {
-            transform: translateY(0);
-            box-shadow: none;
+        /* Стили для скроллбара */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
 
-        .social-button span {
-            font-size: 0.8rem;
-            opacity: 0.9;
-        }
-    </style>
-</head>
-
-<body>
-
-    <div class="main-container-wrapper">
-        <div
-            class="w-full max-w-lg bg-slate-900/60 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-2xl overflow-hidden relative z-10">
-
-            <div class="p-8 pb-4 flex flex-col items-center text-center">
-
-                <div class="relative mb-4 group cursor-pointer">
-                    <img id="profile-avatar" src="" alt="Avatar"
-                        class="relative w-28 h-28 rounded-full object-cover border-2 border-white/10 shadow-xl transition-transform duration-300 hover:scale-105" />
-                </div>
-
-                <h1 id="profile-name" class="text-3xl font-black text-white tracking-tight mb-2"></h1>
-
-                <div id="profile-tags" class="flex flex-wrap justify-center gap-2 mb-3">
-                </div>
-
-                <p id="profile-subtitle" class="text-white/80 text-sm"></p>
-            </div>
-
-            <div id="tabs-navigation" class="flex justify-center gap-2 mt-4 px-6">
-                <button data-tab="home"
-                    class="tab-button px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 transition-all duration-300 text-white/40 hover:text-white/70 hover:bg-white/5 active">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-                        strokeLinejoin="round" class="w-4 h-4 relative z-10">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                    </svg>
-                    <span>Главная</span>
-                </button>
-
-                <button data-tab="projects"
-                    class="tab-button px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 transition-all duration-300 text-white/40 hover:text-white/70 hover:bg-white/5">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-                        strokeLinejoin="round" class="w-4 h-4 relative z-10">
-                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    <span>Проекты</span>
-                </button>
-
-                <button data-tab="socials"
-                    class="tab-button px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 transition-all duration-300 text-white/40 hover:text-white/70 hover:bg-white/5">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-                        strokeLinejoin="round" class="w-4 h-4 relative z-10">
-                        <path d="M17 18a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v12z"></path>
-                        <path d="M7 10h10"></path>
-                        <path d="M7 14h10"></path>
-                        <path d="M7 6h10"></path>
-                    </svg>
-                    <span>Социалки</span>
-                </button>
-            </div>
-
-            <div class="p-6 min-h-[300px] relative">
-
-                <div id="content-home" class="content-section active text-center">
-                    <h2 class="text-xl font-bold text-white mb-4">Добро пожаловать</h2>
-                    <p id="home-description" class="text-white/70 leading-relaxed text-base mx-auto max-w-md"></p>
-                </div>
-
-                <div id="content-projects" class="content-section">
-                    <h2 class="text-xl font-bold text-white mb-4">Мои проекты</h2>
-                    <div id="projects-list" class="grid grid-cols-1 gap-4">
-                    </div>
-                </div>
-
-                <div id="content-socials" class="content-section">
-                    <h2 class="text-xl font-bold text-white mb-6">Социальные сети</h2>
-                    <div id="socials-list" class="flex flex-wrap justify-center gap-6">
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-
-
-    <script>
-        const siteConfig = {
-            profile: {
-                name: "whysolitude",
-                subtitle: "Full-stack Developer • Python / Web",
-                description: "Обычный разработчик из Саяногорска. Меня зовут Степан, мне 14, и я программист. Работаю на языках Python и JS. Сейчас работаю над своим голосовым помощником для пк, подробнее вы можете узнать во вкладке 'Социалки', в моем дискорд сервере.",
-                avatar: "https://cdn.discordapp.com/attachments/1200392128312918087/1444663987999604777/e2cc3f915e2967ea83fa57a69dcdf911.png?ex=692d87af&is=692c362f&hm=a3b79182b86c44ffa8ee0b3ad3456dd167226f47d8366ed7a885cf40c558a983& ",
-                tags: ["JavaScript", "Python", "Web"],
-            },
-            socials: [
-                { label: "Discord", url: "https://discord.gg/uvd5SbZzyb ", icon: "https://its-forword-site.vercel.app/images/discord.webp " }
-            ],
-            projects: [
-                {
-                    title: "Portfolio Site",
-                    desc: "Этот сайт, на котором ты сейчас сидишь.",
-                    tags: ["HTML", "CSS", "JS"],
-                    link: "#"
-                },
-            ],
-        };
-
-        function loadStaticContent() {
-            const { profile, socials, projects } = siteConfig;
-
-            // Загрузка HEADER
-            document.getElementById('profile-avatar').src = profile.avatar;
-            document.getElementById('profile-name').textContent = profile.name;
-            document.getElementById('profile-subtitle').textContent = profile.subtitle;
-            document.getElementById('home-description').textContent = profile.description;
-
-            // Загрузка ТЕГОВ
-            const tagsContainer = document.getElementById('profile-tags');
-            tagsContainer.innerHTML = '';
-            profile.tags.forEach(tag => {
-                const span = document.createElement('span');
-                span.className = "tag-pill cursor-pointer px-2 py-0.5 rounded-full bg-white/5 text-xs text-white/60 border border-white/5";
-                span.textContent = tag;
-                tagsContainer.appendChild(span);
-            });
-
-            // Загрузка ПРОЕКТОВ
-            const projectsContainer = document.getElementById('projects-list');
-            projectsContainer.innerHTML = '';
-            projects.forEach(proj => {
-                const itemHtml = `
-                    <a href="${proj.link}" target="_blank" class="group p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors block">
-                        <h3 class="text-lg font-semibold text-white group-hover:text-purple-300 transition-colors">${proj.title}</h3> 
-                        <p class="text-sm text-white/60 mt-1">${proj.desc}</p>
-                        <div class="flex gap-2 mt-3">
-                            ${proj.tags.map(tag => `<span class="text-[10px] uppercase tracking-wider bg-white/10 px-2 py-1 rounded text-white/80">${tag}</span>`).join('')}
-                        </div>
-                    </a>
-                `;
-                projectsContainer.innerHTML += itemHtml;
-            });
-
-            // Загрузка СОЦСЕТЕЙ
-            const socialsListContainer = document.getElementById('socials-list');
-            socialsListContainer.innerHTML = '';
-            socials.forEach(soc => {
-                const link = document.createElement('a');
-                link.href = soc.url;
-                link.target = "_blank";
-                link.className = "social-button";
-                link.title = soc.label;
-                link.innerHTML = `
-                    <img src="${soc.icon}" alt="${soc.label} icon">
-                    <span>${soc.label}</span>
-                `;
-                socialsListContainer.appendChild(link);
-            });
+        ::-webkit-scrollbar-track {
+            background: rgba(30, 30, 46, 0.1);
         }
 
-        function switchTab(tabId) {
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.classList.remove('active');
-            });
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #a855f7, #ec4899);
+            border-radius: 4px;
+        }
 
-            const activeContent = document.getElementById(`content-${tabId}`);
-            if (activeContent) {
-                activeContent.classList.add('active');
-                document.querySelector(`.tab-button[data-tab="${tabId}"]`).classList.add('active');
+        /* Фиксированный переключатель темы */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 50;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            border-color: rgba(168, 85, 247, 0.6);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .mobile-stack {
+                flex-direction: column;
+            }
+
+            .mobile-center {
+                text-align: center;
+                justify-content: center;
+            }
+
+            .tab-btn {
+                padding: 12px 16px !important;
+                font-size: 14px !important;
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            loadStaticContent();
+        @media (max-width: 640px) {
+    .tab-nav {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        justify-content: flex-start;
+        padding: 8px;
+    }
+    
+    .tab-nav::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .tab-btn {
+        flex-shrink: 0;
+        padding: 10px 14px !important;
+        font-size: 13px !important;
+        white-space: nowrap;
+    }
+    
+    #tabIndicator {
+        display: none;
+    }
+}
 
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.addEventListener('click', (event) => {
-                    const tabId = event.currentTarget.getAttribute('data-tab');
-                    switchTab(tabId);
+
+/* Эффект подсветки как у аватарки - внешнее свечение */
+.tag-item {
+    position: relative;
+    cursor: pointer;
+    isolation: isolate;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, box-shadow;
+}
+
+/* Основной слой свечения внутри тега */
+.tag-item .tag-glow {
+    background: linear-gradient(135deg, 
+        rgba(168, 85, 247, 0.2) 0%, 
+        rgba(236, 72, 153, 0.3) 50%, 
+        rgba(168, 85, 247, 0.2) 100%);
+    background-size: 200% 200%;
+    animation: tag-pulse 2s ease-in-out infinite;
+    animation-play-state: paused;
+    filter: blur(4px);
+}
+
+.tag-item:hover .tag-glow {
+    animation-play-state: running;
+}
+
+@keyframes tag-pulse {
+    0%, 100% {
+        background-position: 0% 50%;
+        opacity: 0.5;
+    }
+    50% {
+        background-position: 100% 50%;
+        opacity: 0.8;
+    }
+}
+
+/* Внешнее свечение (ореол) - эффект как у аватарки */
+.tag-item .tag-halo {
+    background: radial-gradient(
+        circle at center,
+        rgba(168, 85, 247, 0.4) 0%,
+        rgba(236, 72, 153, 0.3) 30%,
+        rgba(59, 130, 246, 0.1) 60%,
+        transparent 80%
+    );
+    z-index: -1;
+    transform: scale(0.95);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tag-item:hover .tag-halo {
+    opacity: 0.6 !important;
+    transform: scale(1.05);
+}
+
+/* Поднятие кнопки при наведении (уже есть в HTML классе hover:-translate-y-1) */
+.tag-item:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 
+        0 15px 30px rgba(0, 0, 0, 0.25),
+        0 0 40px rgba(168, 85, 247, 0.4),
+        0 5px 15px rgba(236, 72, 153, 0.3);
+}
+
+/* Индивидуальные цвета для ореола */
+.tag-item:nth-child(1) .tag-halo {
+    background: radial-gradient(
+        circle at center,
+        rgba(168, 85, 247, 0.5) 0%,
+        rgba(168, 85, 247, 0.3) 40%,
+        transparent 70%
+    );
+}
+
+.tag-item:nth-child(2) .tag-halo {
+    background: radial-gradient(
+        circle at center,
+        rgba(245, 158, 11, 0.5) 0%,
+        rgba(245, 158, 11, 0.3) 40%,
+        transparent 70%
+    );
+}
+
+.tag-item:nth-child(3) .tag-halo {
+    background: radial-gradient(
+        circle at center,
+        rgba(59, 130, 246, 0.5) 0%,
+        rgba(59, 130, 246, 0.3) 40%,
+        transparent 70%
+    );
+}
+
+/* Градиентная рамка при наведении */
+.tag-item::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 50px;
+    padding: 1.5px;
+    background: linear-gradient(135deg, 
+        #a855f7, 
+        #ec4899, 
+        #3b82f6, 
+        #a855f7);
+    background-size: 300% 300%;
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+}
+
+.tag-item:hover::after {
+    opacity: 1;
+    animation: gradient-shift 3s linear infinite;
+}
+
+/* Анимация иконок */
+.tag-item i {
+    transition: all 0.3s ease;
+}
+
+.tag-item:hover i {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 8px currentColor);
+}
+
+/* Улучшенный glass эффект */
+.tag-item {
+    backdrop-filter: blur(15px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark .tag-item {
+    background: linear-gradient(
+        135deg,
+        rgba(30, 30, 46, 0.3) 0%,
+        rgba(30, 30, 46, 0.5) 100%
+    );
+}
+
+body.light .tag-item {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.8) 0%,
+        rgba(255, 255, 255, 0.95) 100%
+    );
+    border-color: rgba(148, 163, 184, 0.2);
+}
+
+/* Эффект "плавающей" тени при наведении */
+.tag-item::before {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 10%;
+    width: 80%;
+    height: 20px;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(168, 85, 247, 0.3) 0%,
+        transparent 70%
+    );
+    filter: blur(10px);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -2;
+}
+
+.tag-item:hover::before {
+    opacity: 0.7;
+    transform: translateY(8px) scale(0.95);
+}
+
+/* Анимация появления тегов */
+@keyframes tag-float-in {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.tag-item {
+    animation: tag-float-in 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    opacity: 0;
+}
+
+.tag-item:nth-child(1) { animation-delay: 0.1s; }
+.tag-item:nth-child(2) { animation-delay: 0.2s; }
+.tag-item:nth-child(3) { animation-delay: 0.3s; }-webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.tag-item:hover::before {
+    opacity: 1;
+    animation: gradient-shift 2s ease infinite;
+}
+
+/* Улучшенный glass-эффект для тегов */
+.tag-item {
+    backdrop-filter: blur(12px);
+}
+
+body.dark .tag-item {
+    background: rgba(30, 30, 46, 0.25);
+    border: 1px solid rgba(168, 85, 247, 0.15);
+}
+
+body.light .tag-item {
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+/* Анимация появления тегов */
+.tag-item {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: tag-appear 0.5s ease forwards;
+}
+
+.tag-item:nth-child(1) { animation-delay: 0.1s; }
+.tag-item:nth-child(2) { animation-delay: 0.2s; }
+.tag-item:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes tag-appear {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Микро-анимация для иконок */
+.tag-item i {
+    transition: transform 0.3s ease;
+}
+
+.tag-item:hover i {
+    transform: scale(1.1) rotate(5deg);
+}
+
+@media (max-width: 480px) {
+    .tab-btn {
+        padding: 8px 12px !important;
+        font-size: 12px !important;
+    }
+    
+    .tab-btn i {
+        font-size: 14px;
+    }
+}
+    </style>
+</head>
+
+<body class="dark">
+    <!-- Анимированный фон -->
+    <div class="parallax-bg" id="particles"></div>
+
+    <!-- Переключатель темы -->
+    <button id="themeToggle" class="theme-toggle">
+        <i class="fas fa-sun text-yellow-500 text-xl" id="sunIcon"></i>
+        <i class="fas fa-moon text-purple-400 text-xl hidden" id="moonIcon"></i>
+    </button>
+
+    <!-- Шапка (НЕ фиксированная) -->
+    <header class="py-6 md:py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col items-center">
+                <!-- Бокс 1: Аватар и информация -->
+                <div class="glass-card p-6 rounded-3xl mb-6 w-full max-w-3xl">
+                    <!-- Невидимый frame-контейнер с горизонтальным расположением -->
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+                        <!-- Аватар (слева) -->
+                        <div class="relative group flex-shrink-0">
+                            <div
+                                class="absolute -inset-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-300">
+                            </div>
+                            <img src="https://cdn.discordapp.com/attachments/1402511414714830888/1446448413292888114/image.png?ex=6934058f&is=6932b40f&hm=7736083163a8aa0e9d2aaa62cf64042b1db20563d6cf78bc908320ed9c7cb13e&"
+                                alt="Avatar"
+                                class="relative w-24 h-24 md:w-28 md:h-28 rounded-full object-cover border-4 border-white shadow-2xl z-10 hover:scale-105 transition-transform duration-300">
+                        </div>
+    
+                        <!-- Всё остальное (справа) -->
+                        <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                            <!-- Имя и описание -->
+                            <div class="mb-3">
+                                <h1 class="text-3xl md:text-4xl font-black mb-2 gradient-text">
+                                    whysolitude
+                                </h1>
+                                <div class="text-base md:text-lg font-medium text-gray-600 dark:text-gray-300">
+                                    Full-stack Developer • Python / Web
+                                </div>
+                            </div>
+    
+                        <!-- Теги -->
+                        <div class="flex flex-wrap justify-center md:justify-start gap-3 relative">
+                            <span
+                                class="tag-item px-4 py-2 rounded-full glass-card font-semibold text-sm flex items-center gap-2 relative group overflow-hidden transition-all duration-300 hover:-translate-y-1">
+                                <div
+                                    class="tag-glow absolute inset-0 rounded-full z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div
+                                    class="tag-halo absolute -inset-3 rounded-full z-0 opacity-0 group-hover:opacity-30 blur-xl transition-all duration-500">
+                                </div>
+                                <i class="fas fa-code text-neon-purple relative z-10"></i>
+                                <span class="relative z-10">Python</span>
+                            </span>
+                            <span
+                                class="tag-item px-4 py-2 rounded-full glass-card font-semibold text-sm flex items-center gap-2 relative group overflow-hidden transition-all duration-300 hover:-translate-y-1">
+                                <div
+                                    class="tag-glow absolute inset-0 rounded-full z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div
+                                    class="tag-halo absolute -inset-3 rounded-full z-0 opacity-0 group-hover:opacity-30 blur-xl transition-all duration-500">
+                                </div>
+                                <i class="fab fa-js text-yellow-500 relative z-10"></i>
+                                <span class="relative z-10">JavaScript</span>
+                            </span>
+                            <span
+                                class="tag-item px-4 py-2 rounded-full glass-card font-semibold text-sm flex items-center gap-2 relative group overflow-hidden transition-all duration-300 hover:-translate-y-1">
+                                <div
+                                    class="tag-glow absolute inset-0 rounded-full z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                </div>
+                                <div
+                                    class="tag-halo absolute -inset-3 rounded-full z-0 opacity-0 group-hover:opacity-30 blur-xl transition-all duration-500">
+                                </div>
+                                <i class="fas fa-globe text-blue-500 relative z-10"></i>
+                                <span class="relative z-10">Web Dev</span>
+                            </span>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Бокс 2: Вкладки навигации -->
+                <div class="w-full max-w-3xl">
+                    <nav class="relative">
+                        <div class="flex flex-wrap justify-center gap-2 p-2 rounded-2xl glass-card tab-nav">
+                            <button data-tab="home"
+                                class="tab-btn relative px-4 py-3 rounded-xl font-bold text-sm transition-all duration-300 flex items-center gap-2 group flex-shrink-0">
+                                <i class="fas fa-home"></i>
+                                <span>Главная</span>
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
+                                </div>
+                            </button>
+    
+                            <button data-tab="projects"
+                                class="tab-btn relative px-4 py-3 rounded-xl font-bold text-sm transition-all duration-300 flex items-center gap-2 group flex-shrink-0">
+                                <i class="fas fa-rocket"></i>
+                                <span>Проекты</span>
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-cyan-600/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
+                                </div>
+                            </button>
+    
+                            <button data-tab="skills"
+                                class="tab-btn relative px-4 py-3 rounded-xl font-bold text-sm transition-all duration-300 flex items-center gap-2 group flex-shrink-0">
+                                <i class="fas fa-code"></i>
+                                <span>Навыки</span>
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-br from-green-600/20 to-emerald-600/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
+                                </div>
+                            </button>
+    
+                            <button data-tab="services"
+                                class="tab-btn relative px-4 py-3 rounded-xl font-bold text-sm transition-all duration-300 flex items-center gap-2 group flex-shrink-0">
+                                <i class="fas fa-briefcase"></i>
+                                <span>Услуги</span>
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-br from-orange-600/20 to-red-600/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
+                                </div>
+                            </button>
+    
+                            <button data-tab="contact"
+                                class="tab-btn relative px-4 py-3 rounded-xl font-bold text-sm transition-all duration-300 flex items-center gap-2 group flex-shrink-0">
+                                <i class="fas fa-envelope"></i>
+                                <span>Контакты</span>
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-br from-pink-600/20 to-rose-600/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
+                                </div>
+                            </button>
+                        </div>
+                        <div class="tab-indicator" id="tabIndicator"></div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+        <!-- Основной контент -->
+        <main class="flex-1 container mx-auto px-4 pb-12">
+            <!-- Главная -->
+            <div id="content-home" class="content-item active">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+                    <div class="glass-card p-6 md:p-8 rounded-3xl">
+                        <h2 class="text-2xl md:text-3xl font-bold mb-4 md:mb-6 gradient-text">Привет!</h2>
+                        <p class="text-base md:text-lg mb-4 leading-relaxed">
+                            Меня зовут Степан, мне 14 лет, и я занимаюсь программированием уже полтора года.
+                            Живу в Саяногорске и создаю проекты на Python и JavaScript.
+                        </p>
+                        <p class="text-base md:text-lg mb-6 md:mb-8 leading-relaxed">
+                            Мой главный проект - голосовой помощник для ПК.
+                            Все анонсы и обсуждения проходят в моём Discord сообществе.
+                        </p>
+
+                        <div class="grid grid-cols-2 gap-3 md:gap-4">
+                            <div
+                                class="text-center p-3 md:p-4 rounded-2xl bg-gradient-to-br from-purple-500/10 to-pink-500/10">
+                                <div class="text-2xl md:text-3xl font-black gradient-text">1.5</div>
+                                <div class="text-xs md:text-sm font-medium">Года кодинге</div>
+                            </div>
+                            <div
+                                class="text-center p-3 md:p-4 rounded-2xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10">
+                                <div class="text-2xl md:text-3xl font-black gradient-text">2</div>
+                                <div class="text-xs md:text-sm font-medium">Проекта</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 md:p-8 rounded-3xl">
+                        <h3 class="text-xl md:text-2xl font-bold mb-4 md:mb-6 gradient-text">Что сейчас делаю 🚀</h3>
+                        <div class="space-y-4 md:space-y-6">
+                            <div class="flex items-start gap-3 md:gap-4">
+                                <div
+                                    class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-robot text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg md:text-xl mb-1">Голосовой помощник</h4>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm md:text-base">AI-помощник для
+                                        автоматизации задач на ПК</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3 md:gap-4">
+                                <div
+                                    class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-br from-green-600 to-emerald-600 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-code text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg md:text-xl mb-1">Этот сайт</h4>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm md:text-base">Современное
+                                        портфолио с анимациями</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Проекты -->
+            <div id="content-projects" class="content-item">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 md:gap-6">
+                    <div class="glass-card p-4 md:p-6 rounded-3xl hover:scale-[1.02] transition-transform duration-300">
+                        <div
+                            class="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center mb-4">
+                            <i class="fas fa-laptop-code text-white text-lg md:text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-bold mb-3">Голосовой помощник</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm md:text-base mb-3">Умный AI-помощник для
+                            автоматизации задач на компьютере с голосовым управлением</p>
+                        <div class="flex flex-wrap gap-1.5 mb-4">
+                            <span
+                                class="px-2.5 py-1 rounded-full bg-purple-500/20 text-purple-700 dark:text-purple-300 text-xs">Python</span>
+                            <span
+                                class="px-2.5 py-1 rounded-full bg-pink-500/20 text-pink-700 dark:text-pink-300 text-xs">AI</span>
+                            <span
+                                class="px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-700 dark:text-blue-300 text-xs">Voice</span>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-4 md:p-6 rounded-3xl hover:scale-[1.02] transition-transform duration-300">
+                        <div
+                            class="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-green-600 to-emerald-600 flex items-center justify-center mb-4">
+                            <i class="fas fa-globe text-white text-lg md:text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-bold mb-3">Портфолио сайт</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm md:text-base mb-3">Современный адаптивный
+                            сайт-портфолио с анимациями и тёмной темой</p>
+                        <div class="flex flex-wrap gap-1.5 mb-4">
+                            <span
+                                class="px-2.5 py-1 rounded-full bg-yellow-500/20 text-yellow-700 dark:text-yellow-300 text-xs">HTML</span>
+                            <span
+                                class="px-2.5 py-1 rounded-full bg-red-500/20 text-red-700 dark:text-red-300 text-xs">CSS</span>
+                            <span
+                                class="px-2.5 py-1 rounded-full bg-green-500/20 text-green-700 dark:text-green-300 text-xs">JS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Навыки -->
+            <div id="content-skills" class="content-item">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+                    <div class="glass-card p-6 md:p-8 rounded-3xl">
+                        <h3 class="text-xl md:text-2xl font-bold mb-6 gradient-text">Технические навыки 💻</h3>
+                        <div class="space-y-4 md:space-y-6">
+                            <div>
+                                <div class="flex justify-between mb-1.5">
+                                    <span class="font-bold">Python</span>
+                                    <span class="font-bold text-neon-purple">80%</span>
+                                </div>
+                                <div class="h-2.5 rounded-full bg-gray-200 dark:bg-gray-800">
+                                    <div class="h-full rounded-full bg-gradient-to-r from-purple-600 to-pink-600"
+                                        style="width: 85%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-1.5">
+                                    <span class="font-bold">JavaScript</span>
+                                    <span class="font-bold text-neon-purple">75%</span>
+                                </div>
+                                <div class="h-2.5 rounded-full bg-gray-200 dark:bg-gray-800">
+                                    <div class="h-full rounded-full bg-gradient-to-r from-yellow-500 to-orange-500"
+                                        style="width: 75%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-1.5">
+                                    <span class="font-bold">HTML/CSS</span>
+                                    <span class="font-bold text-neon-purple">95%</span>
+                                </div>
+                                <div class="h-2.5 rounded-full bg-gray-200 dark:bg-gray-800">
+                                    <div class="h-full rounded-full bg-gradient-to-r from-blue-600 to-cyan-600"
+                                        style="width: 95%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 md:p-8 rounded-3xl">
+                        <h3 class="text-xl md:text-2xl font-bold mb-6 gradient-text">Инструменты ⚙️</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-4">
+                            <div
+                                class="flex flex-col items-center p-3 md:p-4 rounded-2xl bg-gradient-to-br from-purple-500/10 to-pink-500/10">
+                                <i class="fab fa-git-alt text-2xl md:text-3xl mb-2 text-purple-600"></i>
+                                <span class="font-bold text-sm md:text-base">Git</span>
+                            </div>
+                            <div
+                                class="flex flex-col items-center p-3 md:p-4 rounded-2xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10">
+                                <i class="fab fa-github text-2xl md:text-3xl mb-2 text-gray-800 dark:text-white"></i>
+                                <span class="font-bold text-sm md:text-base">GitHub</span>
+                            </div>
+                            <div
+                                class="flex flex-col items-center p-3 md:p-4 rounded-2xl bg-gradient-to-br from-yellow-500/10 to-orange-500/10">
+                                <i class="fas fa-terminal text-2xl md:text-3xl mb-2 text-yellow-600"></i>
+                                <span class="font-bold text-sm md:text-base">Terminal</span>
+                            </div>
+                            <div
+                                class="flex flex-col items-center p-3 md:p-4 rounded-2xl bg-gradient-to-br from-red-500/10 to-pink-500/10">
+                                <i class="fas fa-code text-2xl md:text-3xl mb-2 text-red-600"></i>
+                                <span class="font-bold text-sm md:text-base">VS Code</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Услуги -->
+            <div id="content-services" class="content-item">
+                <div class="glass-card p-6 md:p-8 rounded-3xl">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center gradient-text">Что я могу сделать
+                        для вас 🛠️</h3>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-6 md:mb-8">
+                        <div
+                            class="p-4 md:p-6 rounded-2xl bg-gradient-to-br from-purple-500/10 to-transparent border border-purple-500/20">
+                            <div class="flex items-center gap-3 md:gap-4 mb-3 md:mb-4">
+                                <div
+                                    class="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
+                                    <i class="fas fa-robot text-white text-xl"></i>
+                                </div>
+                                <h4 class="text-lg md:text-2xl font-bold">Разработка ботов</h4>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm md:text-base mb-3 md:mb-4">
+                                Создаю Discord и Telegram ботов любой сложности: от простых команд до сложных систем.
+                            </p>
+                            <ul class="space-y-1.5 md:space-y-2">
+                                <li class="flex items-center gap-2 text-sm md:text-base">
+                                    <i class="fas fa-check text-green-500"></i>
+                                    <span>Discord боты на Python</span>
+                                </li>
+                                <li class="flex items-center gap-2 text-sm md:text-base">
+                                    <i class="fas fa-check text-green-500"></i>
+                                    <span>Telegram боты</span>
+                                </li>
+                                <li class="flex items-center gap-2 text-sm md:text-base">
+                                    <i class="fas fa-check text-green-500"></i>
+                                    <span>Интеграция с API</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div
+                            class="p-4 md:p-6 rounded-2xl bg-gradient-to-br from-blue-500/10 to-transparent border border-blue-500/20">
+                            <div class="flex items-center gap-3 md:gap-4 mb-3 md:mb-4">
+                                <div
+                                    class="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center">
+                                    <i class="fas fa-code text-white text-xl"></i>
+                                </div>
+                                <h4 class="text-lg md:text-2xl font-bold">Веб-разработка</h4>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm md:text-base mb-3 md:mb-4">
+                                Создаю современные адаптивные сайты: портфолио, лендинги, блоги с уникальным дизайном.
+                            </p>
+                            <ul class="space-y-1.5 md:space-y-2">
+                                <li class="flex items-center gap-2 text-sm md:text-base">
+                                    <i class="fas fa-check text-green-500"></i>
+                                    <span>HTML, CSS, JavaScript</span>
+                                </li>
+                                <li class="flex items-center gap-2 text-sm md:text-base">
+                                    <i class="fas fa-check text-green-500"></i>
+                                    <span>Адаптивный дизайн</span>
+                                </li>
+                                <li class="flex items-center gap-2 text-sm md:text-base">
+                                    <i class="fas fa-check text-green-500"></i>
+                                    <span>Современные анимации</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="text-center p-6 md:p-8 rounded-3xl bg-gradient-to-r from-purple-600/20 to-pink-600/20">
+                        <h4 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Как заказать?</h4>
+                        <p class="text-base md:text-xl mb-4 md:mb-6">Напишите мне в Discord, расскажите о своём проекте,
+                            обсудим детали и цены!</p>
+                        <a href="https://discord.com/users/1055758476460179536" target="_blank"
+                            class="inline-flex items-center gap-2 md:gap-3 px-6 md:px-8 py-3 md:py-4 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold text-base md:text-lg hover:scale-105 transition-transform duration-300">
+                            <i class="fab fa-discord text-xl"></i>
+                            Написать в Discord
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Контакты -->
+            <div id="content-contact" class="content-item">
+                <div class="glass-card p-6 md:p-8 rounded-3xl">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center gradient-text">Свяжитесь со мной
+                        📞</h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
+                        <a href="https://discord.gg/uvd5SbZzyb" target="_blank"
+                            class="p-4 md:p-6 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 hover:scale-105 transition-transform duration-300 text-center">
+                            <i class="fab fa-discord text-4xl md:text-5xl mb-3 md:mb-4 text-indigo-500"></i>
+                            <h4 class="text-lg md:text-xl font-bold mb-1.5 md:mb-2">Discord</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm md:text-base">Основной способ связи</p>
+                        </a>
+
+                        <a href="https://t.me/dswhysolitude" target="_blank"
+                            class="p-4 md:p-6 rounded-2xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/20 hover:scale-105 transition-transform duration-300 text-center">
+                            <i class="fab fa-telegram text-4xl md:text-5xl mb-3 md:mb-4 text-blue-500"></i>
+                            <h4 class="text-lg md:text-xl font-bold mb-1.5 md:mb-2">Telegram</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm md:text-base">Дополнительный способ связи
+                            </p>
+                        </a>
+                    </div>
+
+                    <div class="text-center">
+                        <p class="text-base md:text-lg mb-3 md:mb-4">Быстрее всего я отвечаю в Discord. Присоединяйтесь
+                            к моему сообществу!</p>
+                        <a href="https://discord.gg/uvd5SbZzyb" target="_blank"
+                            class="inline-flex items-center gap-2 md:gap-3 px-6 md:px-8 py-3 md:py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-base md:text-lg hover:scale-105 transition-transform duration-300">
+                            <i class="fab fa-discord text-xl"></i>
+                            Присоединиться к Discord
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Подвал -->
+        <footer class="py-6 md:py-8 border-t border-gray-300 dark:border-gray-800 mt-8 md:mt-12">
+            <div class="container mx-auto px-4">
+                <div class="text-center">
+                    <div class="mb-4 md:mb-6">
+                        <div class="text-xl md:text-2xl font-black gradient-text mb-1.5 md:mb-2">whysolitude</div>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm md:text-base">Обычный разработчик • 2025</p>
+                    </div>
+
+                    <div class="flex justify-center gap-4 md:gap-6 mb-4 md:mb-6">
+                        <a href="https://discord.gg/uvd5SbZzyb" target="_blank"
+                            class="w-10 h-10 md:w-12 md:h-12 rounded-full glass-card flex items-center justify-center hover:scale-110 transition-transform">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                        <a href="https://t.me/dswhysolitude" target="_blank"
+                            class="w-10 h-10 md:w-12 md:h-12 rounded-full glass-card flex items-center justify-center hover:scale-110 transition-transform">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Конфигурация
+        const config = {
+            profile: {
+                name: "whysolitude",
+                subtitle: "Разработчик • Python / JavaScript",
+                avatar: "https://cdn.discordapp.com/attachments/1200392128312918087/1444663987999604777/e2cc3f915e2967ea83fa57a69dcdf911.png",
+                tags: ["JavaScript", "Python", "Web"],
+            },
+            socials: [
+                { label: "Discord", url: "https://discord.gg/uvd5SbZzyb", icon: "discord" },
+                { label: "Telegram", url: "https://t.me/dswhysolitude", icon: "telegram" }
+            ]
+        };
+
+        // Инициализация частиц
+        function initParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+
+                // Случайные размеры и позиция
+                const size = Math.random() * 5 + 2;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 5;
+
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+
+                container.appendChild(particle);
+            }
+        }
+
+        // Переключение темы
+        function toggleTheme() {
+            const body = document.body;
+            const isDark = body.classList.contains('dark');
+            const sunIcon = document.getElementById('sunIcon');
+            const moonIcon = document.getElementById('moonIcon');
+
+            if (isDark) {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Переключение вкладок (БЕЗ автоматической прокрутки)
+        function switchTab(tabName) {
+            // Скрываем весь контент
+            document.querySelectorAll('.content-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Показываем выбранную вкладку
+            const activeContent = document.getElementById(`content-${tabName}`);
+            if (activeContent) {
+                setTimeout(() => {
+                    activeContent.classList.add('active');
+                }, 100);
+            }
+
+            // Обновляем индикатор вкладки
+            updateTabIndicator(tabName);
+
+            // Обновляем активную кнопку
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-gradient-to-r', 'from-purple-600/30', 'to-pink-600/30', 'text-white');
+                btn.classList.add('text-gray-700', 'dark:text-gray-300');
+            });
+
+            const activeBtn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-gray-700', 'dark:text-gray-300');
+                activeBtn.classList.add('bg-gradient-to-r', 'from-purple-600/30', 'to-pink-600/30', 'text-white');
+            }
+        }
+
+        // Обновление индикатора вкладки
+        function updateTabIndicator(tabName) {
+            const tabBtn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+            const indicator = document.getElementById('tabIndicator');
+
+            if (tabBtn && indicator && window.innerWidth > 640) {
+                const rect = tabBtn.getBoundingClientRect();
+                const parentRect = tabBtn.parentElement.getBoundingClientRect();
+
+                indicator.style.width = `${rect.width}px`;
+                indicator.style.left = `${rect.left - parentRect.left}px`;
+                indicator.style.display = 'block';
+            } else if (indicator) {
+                indicator.style.display = 'none';
+            }
+        }
+
+        // Загрузка сохранённой темы
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            const sunIcon = document.getElementById('sunIcon');
+            const moonIcon = document.getElementById('moonIcon');
+
+            document.body.classList.remove('light', 'dark');
+            document.body.classList.add(savedTheme);
+
+            if (savedTheme === 'dark') {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+        }
+
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            // Загрузка темы
+            loadTheme();
+
+            // Инициализация частиц
+            initParticles();
+
+            // Настройка переключателя темы
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+            // Настройка вкладок
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const tabName = this.getAttribute('data-tab');
+                    switchTab(tabName);
                 });
             });
 
+            // Активация первой вкладки
             switchTab('home');
+
+            // Инициализация индикатора вкладки
+            setTimeout(() => {
+                updateTabIndicator('home');
+            }, 100);
+
+            // Скрытие индикатора на мобильных
+            window.addEventListener('resize', () => {
+                updateTabIndicator(document.querySelector('.tab-btn.active')?.getAttribute('data-tab') || 'home');
+            });
+        });
+
+        // Эффект параллакса при движении мыши
+        document.addEventListener('mousemove', (e) => {
+            const particles = document.getElementById('particles');
+            const x = (e.clientX / window.innerWidth) * 5;
+            const y = (e.clientY / window.innerHeight) * 5;
+
+            particles.style.transform = `translate(${x}px, ${y}px)`;
         });
     </script>
 </body>
-
 
 </html>
